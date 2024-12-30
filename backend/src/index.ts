@@ -4,9 +4,10 @@ import jwt from "jsonwebtoken"
 import { ContentModel, LinkModel, UserModel } from "./db"
 import { UserMiddleware } from "./middleware"
 import { random } from "./utils"
-
+import cors from "cors"
 const JWT_PASSWORD = "hdbflhdabflBFKLHBLIVHBVFLUYevhlfVAVH"
 const app = express()
+app.use(cors())
 app.use(express.json())
 app.post("/api/v1/signup",async (req , res) =>{
     //zod validation baad mian
@@ -52,9 +53,11 @@ app.post("/api/v1/signin",async (req,res)=>{
 app.post("/api/v1/content",UserMiddleware,async(req,res)=>{
     const link = req.body.link;
     const type = req.body.type;
+    const title = req.body.title;
     await ContentModel.create({
         link,
         type,
+        title,
         //@ts-ignore
         userId:req.userId,
         tags:[]

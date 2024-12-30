@@ -17,8 +17,10 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const db_1 = require("./db");
 const middleware_1 = require("./middleware");
 const utils_1 = require("./utils");
+const cors_1 = __importDefault(require("cors"));
 const JWT_PASSWORD = "hdbflhdabflBFKLHBLIVHBVFLUYevhlfVAVH";
 const app = (0, express_1.default)();
+app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.post("/api/v1/signup", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     //zod validation baad mian
@@ -62,9 +64,11 @@ app.post("/api/v1/signin", (req, res) => __awaiter(void 0, void 0, void 0, funct
 app.post("/api/v1/content", middleware_1.UserMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const link = req.body.link;
     const type = req.body.type;
+    const title = req.body.title;
     yield db_1.ContentModel.create({
         link,
         type,
+        title,
         //@ts-ignore
         userId: req.userId,
         tags: []
